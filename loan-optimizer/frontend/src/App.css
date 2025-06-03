@@ -1,0 +1,109 @@
+/* Apply to whole page */
+body {
+  margin: 0;
+  background-color: #fff0e0; /* light orange background */
+  font-family: 'Prompt', sans-serif;
+  color: #333;
+}
+
+/* Main App container */
+.App {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff4e6; /* light orange for inner box */
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Input group styling */
+.input-group {
+  margin-bottom: 1.5rem; /* increase spacing between groups */
+}
+
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Button styling */
+button {
+  margin-top: 0.5rem; /* ✅ Add this line */
+  padding: 0.5rem 1.2rem;
+  background-color: #f68b1e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e67a13;
+}
+
+/* Summary section */
+.summary-box {
+  background-color: #fff9f3;
+  padding: 1rem;
+  border-left: 6px solid #f68b1e;
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+}
+
+/* Results section */
+.result {
+  margin-top: 1rem;
+  background: #e0f7fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Tips and suggestions */
+.tip,
+.suggestion {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: #fffde7;
+  font-style: italic;
+}
+
+/* Transaction table */
+.bank-style-log {
+  margin-top: 2rem;
+}
+
+.bank-style-log table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bank-style-log th,
+.bank-style-log td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.bank-style-log th {
+  background-color: #fdd9ae;
+}
+
+.bank-style-log tr:hover {
+  background-color: #fff3e0;
+}

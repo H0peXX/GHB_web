@@ -1,2 +1,5 @@
-cd .\loan-optimizer\
+cd .\loan-optimizer\frontend
 npm start
+
+cd .\loan-optimizer\backend
+node server.js
