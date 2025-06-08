@@ -5,7 +5,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Calculate new loan values
+function calcMonthlyPayment(P, r, n) {
+  if (r === 0) return P / n;
+  return (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
 app.post('/api/calculate', (req, res) => {
   const { principal, rate, term, monthly, payment, income, oldTerm } = req.body;
 
@@ -17,10 +21,8 @@ app.post('/api/calculate', (req, res) => {
 
   const newPrincipal = Math.max(principalNum - paymentNum, 0);
 
-  // New monthly payment based on reduced principal
-  const newMonthly = rateNum > 0
-    ? (newPrincipal * rateNum) / (1 - Math.pow(1 + rateNum, -termNum))
-    : newPrincipal / termNum;
+  // คำนวณค่างวดใหม่ด้วยฟังก์ชัน amortization formula
+  const newMonthly = calcMonthlyPayment(newPrincipal, rateNum, termNum);
 
   // Estimate new loan term based on same monthly payment
   const newTermEstimate = rateNum > 0
@@ -44,7 +46,6 @@ app.post('/api/calculate', (req, res) => {
   });
 });
 
-// Start server
 const PORT = 4000;
 app.listen(PORT, () => {
   console.log(`📡 Backend running at http://localhost:${PORT}`);

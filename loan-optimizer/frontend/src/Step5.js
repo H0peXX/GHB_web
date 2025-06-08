@@ -44,8 +44,6 @@ function Step5() {
     if (incomeVal < 6000) {
       repaymentRate = 0;
       note = '🛡️ คุณอยู่ในช่วงรายได้น้อย ระบบอาจให้พักชำระหนี้ชั่วคราว';
-
-      // ไม่แนะนำการจ่ายถ้าอยู่ในช่วงรายได้น้อย
       setSuggestion('');
       setRecommendation(`${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท`);
       return;
@@ -64,18 +62,10 @@ function Step5() {
     const maxSuggested = Math.round(incomeVal * (repaymentRate + 0.1));
     const estimatedMonths = monthlyVal > 0 ? Math.floor(suggestedPayment / monthlyVal) : 0;
 
-    setSuggestion(
-      `💡 ลองจ่ายเงินเพิ่มประมาณ ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
-      `เพื่อช่วยลดเงินต้นและดอกเบี้ย (ลดได้ประมาณ ${estimatedMonths} เดือน)`
-    );
+    setSuggestion(`💡 ลองจ่ายเงินเพิ่มประมาณ ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท เพื่อช่วยลดเงินต้นและดอกเบี้ย (ลดได้ประมาณ ${estimatedMonths} เดือน)`);
 
-    setRecommendation(
-      `${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท ` +
-      `แนะนำจ่ายเพิ่ม ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
-      `(ลดได้ประมาณ ${estimatedMonths} เดือน)`
-    );
+    setRecommendation(`${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท แนะนำจ่ายเพิ่ม ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท (ลดได้ประมาณ ${estimatedMonths} เดือน)`);
   };
-
 
   const handleCalculate = async () => {
     if (!payment || isNaN(payment)) return;
@@ -94,7 +84,7 @@ function Step5() {
       rate,
       term,
       monthly,
-      payment: totalPayment.toString(),  // ส่งรวมเข้าไปเลย!
+      payment: totalPayment.toString(),
       income,
       oldTerm
     };
@@ -140,7 +130,6 @@ function Step5() {
       console.error('Error:', err);
     }
   };
-
 
   const handleIncomeChange = (e) => {
     const value = e.target.value;
@@ -189,12 +178,7 @@ function Step5() {
           <p>
             💵 รวมยอดชำระเดือนนี้: {(parseFloat(monthly) + parseFloat(payment || 0)).toLocaleString()} บาท
             {payment && parseFloat(payment) > 0 && (
-              <>
-                {' '}💡 คาดว่าจะลดได้ประมาณ{' '}
-                <strong>
-                  {Math.max(Math.floor((parseFloat(payment) + parseFloat(monthly)) / parseFloat(monthly)) - 1, 0)} เดือน
-                </strong>
-              </>
+              <> 💡 คาดว่าจะลดได้ประมาณ <strong>{Math.max(Math.floor((parseFloat(payment) + parseFloat(monthly)) / parseFloat(monthly)) - 1, 0)} เดือน</strong></>
             )}
           </p>
         )}
