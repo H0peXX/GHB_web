@@ -37,109 +37,109 @@ function Step5() {
     generateSuggestion(knownIncome, knownPrincipal, knownMonthly);
   }, []);
 
-const generateSuggestion = (incomeVal, principalVal, monthlyVal) => {
-  let repaymentRate;
-  let note;
+  const generateSuggestion = (incomeVal, principalVal, monthlyVal) => {
+    let repaymentRate;
+    let note;
 
-  if (incomeVal < 6000) {
-    repaymentRate = 0;
-    note = '🛡️ คุณอยู่ในช่วงรายได้น้อย ระบบอาจให้พักชำระหนี้ชั่วคราว';
-    
-    // ไม่แนะนำการจ่ายถ้าอยู่ในช่วงรายได้น้อย
-    setSuggestion('');
-    setRecommendation(`${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท`);
-    return;
-  } else if (incomeVal <= 10000) {
-    repaymentRate = 0.10;
-    note = '📉 รายได้ปานกลาง แนะนำชำระขั้นต่ำเบาๆ';
-  } else if (incomeVal <= 15000) {
-    repaymentRate = 0.25;
-    note = '💰 รายได้เหมาะสม แนะนำชำระระดับปกติ';
-  } else {
-    repaymentRate = 0.35;
-    note = '🚀 รายได้ดี แนะนำจ่ายเพิ่มเพื่อลดระยะเวลากู้';
-  }
+    if (incomeVal < 6000) {
+      repaymentRate = 0;
+      note = '🛡️ คุณอยู่ในช่วงรายได้น้อย ระบบอาจให้พักชำระหนี้ชั่วคราว';
 
-  const suggestedPayment = Math.round(incomeVal * repaymentRate);
-  const maxSuggested = Math.round(incomeVal * (repaymentRate + 0.1));
-  const estimatedMonths = monthlyVal > 0 ? Math.floor(suggestedPayment / monthlyVal) : 0;
+      // ไม่แนะนำการจ่ายถ้าอยู่ในช่วงรายได้น้อย
+      setSuggestion('');
+      setRecommendation(`${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท`);
+      return;
+    } else if (incomeVal <= 10000) {
+      repaymentRate = 0.10;
+      note = '📉 รายได้ปานกลาง แนะนำชำระขั้นต่ำเบาๆ';
+    } else if (incomeVal <= 15000) {
+      repaymentRate = 0.25;
+      note = '💰 รายได้เหมาะสม แนะนำชำระระดับปกติ';
+    } else {
+      repaymentRate = 0.35;
+      note = '🚀 รายได้ดี แนะนำจ่ายเพิ่มเพื่อลดระยะเวลากู้';
+    }
 
-  setSuggestion(
-    `💡 ลองจ่ายเงินเพิ่มประมาณ ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
-    `เพื่อช่วยลดเงินต้นและดอกเบี้ย (ลดได้ประมาณ ${estimatedMonths} เดือน)`
-  );
+    const suggestedPayment = Math.round(incomeVal * repaymentRate);
+    const maxSuggested = Math.round(incomeVal * (repaymentRate + 0.1));
+    const estimatedMonths = monthlyVal > 0 ? Math.floor(suggestedPayment / monthlyVal) : 0;
 
-  setRecommendation(
-    `${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท ` +
-    `แนะนำจ่ายเพิ่ม ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
-    `(ลดได้ประมาณ ${estimatedMonths} เดือน)`
-  );
-};
+    setSuggestion(
+      `💡 ลองจ่ายเงินเพิ่มประมาณ ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
+      `เพื่อช่วยลดเงินต้นและดอกเบี้ย (ลดได้ประมาณ ${estimatedMonths} เดือน)`
+    );
+
+    setRecommendation(
+      `${note} รายได้ของคุณคือ ${incomeVal.toLocaleString()} บาท ` +
+      `แนะนำจ่ายเพิ่ม ${suggestedPayment.toLocaleString()} - ${maxSuggested.toLocaleString()} บาท ` +
+      `(ลดได้ประมาณ ${estimatedMonths} เดือน)`
+    );
+  };
 
 
   const handleCalculate = async () => {
-  if (!payment || isNaN(payment)) return;
+    if (!payment || isNaN(payment)) return;
 
-  const extraPayment = parseFloat(payment);
-  const monthlyPayment = parseFloat(monthly);
-  const totalPayment = extraPayment + monthlyPayment;
+    const extraPayment = parseFloat(payment);
+    const monthlyPayment = parseFloat(monthly);
+    const totalPayment = extraPayment + monthlyPayment;
 
-  if (totalPayment > parseFloat(principal)) {
-    alert('❌ ยอดรวมที่จ่ายห้ามเกินเงินต้นคงเหลือ');
-    return;
-  }
+    if (totalPayment > parseFloat(principal)) {
+      alert('❌ ยอดรวมที่จ่ายห้ามเกินเงินต้นคงเหลือ');
+      return;
+    }
 
-  const payload = {
-    principal,
-    rate,
-    term,
-    monthly,
-    payment: totalPayment.toString(),  // ส่งรวมเข้าไปเลย!
-    income,
-    oldTerm
+    const payload = {
+      principal,
+      rate,
+      term,
+      monthly,
+      payment: totalPayment.toString(),  // ส่งรวมเข้าไปเลย!
+      income,
+      oldTerm
+    };
+
+    const date = new Date().toLocaleDateString();
+
+    try {
+      const res = await fetch('http://localhost:4000/api/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      const monthsReduced = parseInt(oldTerm) - parseInt(data.newTerm);
+
+      setResult({
+        message: data.message,
+        newPrincipal: data.newPrincipal,
+        newPayment: data.newPayment
+      });
+
+      setTip(data.tip);
+      setSuggestion(data.suggestion);
+      setRemainingMonths(data.newTerm.toString());
+      setOldTerm(data.newTerm.toString());
+      setPrincipal(data.newPrincipal.toString());
+
+      setTransactions(prev => [
+        {
+          date,
+          amount: totalPayment.toFixed(2),
+          status: data.status,
+          remaining: data.remaining,
+          monthsReduced: monthsReduced > 0 ? monthsReduced : 0
+        },
+        ...prev
+      ]);
+
+      setPayment('');
+    } catch (err) {
+      console.error('Error:', err);
+    }
   };
-
-  const date = new Date().toLocaleDateString();
-
-  try {
-    const res = await fetch('http://localhost:4000/api/calculate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-
-    const monthsReduced = parseInt(oldTerm) - parseInt(data.newTerm);
-
-    setResult({
-      message: data.message,
-      newPrincipal: data.newPrincipal,
-      newPayment: data.newPayment
-    });
-
-    setTip(data.tip);
-    setSuggestion(data.suggestion);
-    setRemainingMonths(data.newTerm.toString());
-    setOldTerm(data.newTerm.toString());
-    setPrincipal(data.newPrincipal.toString());
-
-    setTransactions(prev => [
-      {
-        date,
-        amount: totalPayment.toFixed(2),
-        status: data.status,
-        remaining: data.remaining,
-        monthsReduced: monthsReduced > 0 ? monthsReduced : 0
-      },
-      ...prev
-    ]);
-
-    setPayment('');
-  } catch (err) {
-    console.error('Error:', err);
-  }
-};
 
 
   const handleIncomeChange = (e) => {
@@ -217,6 +217,11 @@ const generateSuggestion = (incomeVal, principalVal, monthlyVal) => {
         </div>
       )}
 
+      {suggestion && (
+        <div className="suggestion">
+          <p><strong>{suggestion}</strong></p>
+        </div>
+      )}
 
       {transactions.length > 0 && (
         <div className="bank-style-log">
